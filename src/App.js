@@ -6,7 +6,7 @@ import uuid from "react-uuid";
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [activeNote, setActiveNote] = useState("");
+  const [activeNote, setActiveNote] = useState(false);
 
   const onAddNote = () => {
     const newNote = {
@@ -27,6 +27,22 @@ function App() {
     setNotes(filterNotes);
   };
 
+  const getActiveNote = () => {
+    return notes.find((note) => note.id === activeNote);
+  };
+
+  const onUpdateNote = (updatedNote) => {
+    const updatedNotesArray = notes.map((note) => {
+      if (note.id === updatedNote.id) {
+        return updatedNote;
+      }
+
+      return note;
+    });
+
+    setNotes(updatedNotesArray);
+  };
+
   return (
     <div className="App">
       <Sidebar
@@ -36,7 +52,7 @@ function App() {
         activeNote={activeNote}
         setActiveNote={setActiveNote}
       />
-      <Main />
+      <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
     </div>
   );
 }

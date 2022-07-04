@@ -1,7 +1,13 @@
 import React from "react";
 import "./Sidebar.css";
 
-const Sidebar = ({ notes, onAddNote, onDeleteNote, setActiveNote }) => {
+const Sidebar = ({
+  notes,
+  onAddNote,
+  onDeleteNote,
+  setActiveNote,
+  activeNote,
+}) => {
   return (
     <div className="app-sidebar">
       <div className="app-sidebar-header">
@@ -10,10 +16,10 @@ const Sidebar = ({ notes, onAddNote, onDeleteNote, setActiveNote }) => {
       </div>
       <div className="app-sidebar-notes">
         {notes.map((note) => (
-          /* 次はここにactive属性を追加する */
           <div
-            className="app-sidebar-note"
+            className={`app-sidebar-note ${note.id === activeNote && "active"}`}
             key={note.id}
+            /* クリックした箇所のIDを取得している */
             onClick={() => setActiveNote(note.id)}
           >
             <div className="sidebar-note-title">

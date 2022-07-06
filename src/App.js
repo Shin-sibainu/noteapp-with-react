@@ -1,12 +1,22 @@
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Main from "./components/Main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import uuid from "react-uuid";
 
 function App() {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(
+    JSON.parse(localStorage.getItem("notes")) || []
+  );
   const [activeNote, setActiveNote] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
+
+  useEffect(() => {
+    setActiveNote(notes[0].id);
+  }, []);
 
   const onAddNote = () => {
     const newNote = {
@@ -15,10 +25,6 @@ function App() {
       content: "テスト投稿です",
       modDate: Date.now(),
     };
-    // setNotes({
-    // title: title,
-    // content: content,
-    // });
     setNotes([...notes, newNote]);
   };
 
@@ -27,19 +33,25 @@ function App() {
     setNotes(filterNotes);
   };
 
+  //レンダリングされるたびに発火してる。
   const getActiveNote = () => {
+    console.log("getactivenote");
     return notes.find((note) => note.id === activeNote);
   };
 
   const onUpdateNote = (updatedNote) => {
+    //修正された新しいノートの配列を返す。
+    //[{...},{...},{...}] ← updatedNotesArray ← 修正されてる新しい配列
     const updatedNotesArray = notes.map((note) => {
       if (note.id === updatedNote.id) {
+        console.log(updatedNote);
         return updatedNote;
       }
-
+      console.log("####");
       return note;
     });
 
+    console.log(updatedNotesArray);
     setNotes(updatedNotesArray);
   };
 

@@ -8,14 +8,18 @@ function App() {
   const [notes, setNotes] = useState(
     JSON.parse(localStorage.getItem("notes")) || []
   );
-  const [activeNote, setActiveNote] = useState(false);
+  const [activeNote, setActiveNote] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   useEffect(() => {
-    setActiveNote(notes[0].id);
+    if (notes.length > 0) {
+      setActiveNote(notes[0].id);
+    } else {
+      setActiveNote(null);
+    }
   }, []);
 
   const onAddNote = () => {
